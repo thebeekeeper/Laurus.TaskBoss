@@ -10,5 +10,6 @@ namespace Laurus.TaskBoss.Core.Entities
     {
         public string JobName { get; set; }
         public string Executable { get; set; }
+        public string CronExpression { get; set; }
     }
 }

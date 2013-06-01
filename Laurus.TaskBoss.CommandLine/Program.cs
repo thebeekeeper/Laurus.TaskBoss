@@ -15,14 +15,16 @@ namespace Laurus.TaskBoss.CommandLine
         {
             IWindsorContainer container = new WindsorContainer();
             container.Install(new Installer());
-
             ILog log = container.Resolve<ILog>();
-            log.Info("Starting file system watcher");
-            container.Resolve<IFileSystemWatcher>().WatchDirectory(@"C:\temp\tasks");
 
             IScheduler scheduler = container.Resolve<IScheduler>();
             log.Info("Starting scheduler");
+            // HACK: scheduler needs to be started before the file system watcher because
+            // the watcher adds jobs to the scheduler
             scheduler.Start();
+
+            log.Info("Starting file system watcher");
+            container.Resolve<IFileSystemWatcher>().WatchDirectory(@"C:\temp\tasks");
         }
     }
 }

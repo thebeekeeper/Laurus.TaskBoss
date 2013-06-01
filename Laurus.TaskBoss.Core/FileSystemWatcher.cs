@@ -19,6 +19,12 @@ namespace Laurus.TaskBoss.Core
 
         void IFileSystemWatcher.WatchDirectory(string path)
         {
+            var existingPackages = Directory.GetFiles(path, "*.zip");
+            foreach (var p in existingPackages)
+            {
+                FileInfo fi = new FileInfo(p);
+                AddPackage(fi.FullName, fi.Name);
+            }
             var watcher = new System.IO.FileSystemWatcher(path);
             watcher.Created += watcher_Created;
             watcher.Deleted += watcher_Deleted;
@@ -27,14 +33,19 @@ namespace Laurus.TaskBoss.Core
 
         private void watcher_Created(object sender, FileSystemEventArgs e)
         {
-            _log.Info("Detected new package: {0}", e.Name);
-            var package = _packageFactory.CreateFromFile(e.FullPath);
-            _scheduler.AddJob(package);
+            AddPackage(e.FullPath, e.Name);
         }
 
         private void watcher_Deleted(object sender, FileSystemEventArgs e)
         {
             _log.Info("Detected deleted package: {0}", e.Name);
+        }
+
+        private void AddPackage(string fullPath, string name)
+        {
+            _log.Info("Detected new package: {0}", name);
+            var package = _packageFactory.CreateFromFile(fullPath);
+            _scheduler.AddJob(package);
         }
 
         private IPackageFactory _packageFactory;

@@ -43,6 +43,7 @@ namespace Laurus.TaskBoss.Core
                 Name = manifest.JobName,
                 Executable = manifest.Executable,
                 Location = directoryInfo,
+                CronExpression = manifest.CronExpression,
             };
         }
 
