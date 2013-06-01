@@ -56,11 +56,18 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="uhttpsharp">
+      <HintPath>..\Vendor\uhttpsharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystemWatcher.cs" />
+    <Compile Include="HttpHandlers\ListTasksHandler.cs" />
+    <Compile Include="HttpHandlers\StartTaskHandler.cs" />
+    <Compile Include="HttpListener.cs" />
     <Compile Include="Installer.cs" />
     <Compile Include="Interfaces\IFileSystemWatcher.cs" />
+    <Compile Include="Interfaces\IHttpListener.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Entities\JobPackage.cs" />
     <Compile Include="Entities\Manifest.cs" />
@@ -70,6 +77,7 @@
     <Compile Include="Interfaces\IPackageFactory.cs" />
     <Compile Include="Interfaces\IScheduler.cs" />
     <Compile Include="QuartzScheduler.cs" />
+    <Compile Include="WindsorHandlerFactory.cs" />
     <Compile Include="ZipPackageFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -25,6 +25,9 @@ namespace Laurus.TaskBoss.CommandLine
 
             log.Info("Starting file system watcher");
             container.Resolve<IFileSystemWatcher>().WatchDirectory(@"C:\temp\tasks");
+
+            log.Info("Starting http server on port 8000");
+            container.Resolve<IHttpListener>().Listen(8000);
         }
     }
 }

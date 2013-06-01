@@ -33,8 +33,12 @@ namespace Laurus.TaskBoss.Core
                 manifest = Newtonsoft.Json.JsonConvert.DeserializeObject<Manifest>(manifestContents);
                 foreach (var e in archive.Entries)
                 {
-                    var outStream = new FileStream(Path.Combine(path, e.Name), FileMode.CreateNew);
-                    e.Open().CopyTo(outStream);
+                    var outFile = Path.Combine(path, e.Name);
+                    if (!File.Exists(outFile))
+                    {
+                        var outStream = new FileStream(outFile, FileMode.CreateNew);
+                        e.Open().CopyTo(outStream);
+                    }
                 }
             }
 
