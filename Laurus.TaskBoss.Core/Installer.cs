@@ -22,7 +22,7 @@ namespace Laurus.TaskBoss.Core
             container.Register(Component.For<IPackageFactory>().ImplementedBy<ZipPackageFactory>());
             container.Register(Component.For<IHttpListener>().ImplementedBy<HttpListener>().LifestyleSingleton());
 
-            container.Register(Component.For<HttpRequestHandler>().Named("task").ImplementedBy<StartTaskHandler>());
+            container.Register(Component.For<HttpRequestHandler>().Named("run").ImplementedBy<StartTaskHandler>());
             container.Register(Component.For<HttpRequestHandler>().Named("list").ImplementedBy<ListTasksHandler>());
             container.Register(Component.For<IHandlerFactory>().ImplementedBy<WindsorHandlerFactory>());
             container.Register(Component.For<IWindsorContainer>().Instance(container).LifestyleSingleton());

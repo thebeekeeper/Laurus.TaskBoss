@@ -18,3 +18,11 @@ Job Package Manifest
 
 Note that if you're running a custom job (ie a program you wrote), everything required to run it should be in the zip file.
 
+
+HTTP Interface
+--------------
+
+TaskBoss has a simple HTTP interface that can list and run jobs.  
+
+* /list will return a list of the names of all scheduled jobs
+* /run/{job_name} will trigger immediate execution of the job named {job_name}

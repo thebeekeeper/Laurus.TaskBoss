@@ -8,7 +8,8 @@ using uhttpsharp;
 
 namespace Laurus.TaskBoss.Core.HttpHandlers
 {
-    [HttpRequestHandlerAttributes("task")]
+    // TODO: do i even need this attribute any longer?
+    [HttpRequestHandlerAttributes("run")]
     public class StartTaskHandler : HttpRequestHandler
     {
         public StartTaskHandler(IScheduler scheduler)

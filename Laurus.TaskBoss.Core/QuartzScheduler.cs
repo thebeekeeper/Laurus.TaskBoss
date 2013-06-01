@@ -20,11 +20,18 @@ namespace Laurus.TaskBoss.Core
 
         void Laurus.TaskBoss.Core.Interfaces.IScheduler.AddJob(Entities.JobPackage package)
         {
+            if (_scheduler.CheckExists(new JobKey(package.Name)))
+            {
+                _log.Error("Package named {0} already exists - not scheduling this one", package.Name);
+                return;
+            }
             var jobDetail = JobBuilder.Create()
                 .OfType<WindowsExeJob>()
                 .UsingJobData("exe_name", package.Executable)
                 .UsingJobData("working_dir", package.Location.FullName)
+                .WithIdentity(package.Name)
                 .Build();
+            _packageCount++;
             ITrigger trigger = TriggerBuilder.Create().WithCronSchedule(package.CronExpression).ForJob(jobDetail).Build();
             _log.Info("Scheduling job with cron expression {0}", package.CronExpression);
             _scheduler.ScheduleJob(jobDetail, trigger);
@@ -33,7 +40,15 @@ namespace Laurus.TaskBoss.Core
         void Laurus.TaskBoss.Core.Interfaces.IScheduler.RemoveJob(Entities.JobPackage package)
         {
             _log.Info("Removing job {0}", package.Name);
-            // TODO: figure out hwo to delete jobs
+            var key = new JobKey(package.Name);
+            if (_scheduler.CheckExists(key) == false)
+            {
+                _log.Error("Cannot remove job [{0}] because it doesn't exist", package.Name);
+            }
+            else
+            {
+                _scheduler.DeleteJob(key);
+            }
         }
 
         void Laurus.TaskBoss.Core.Interfaces.IScheduler.Start()
@@ -58,6 +73,7 @@ namespace Laurus.TaskBoss.Core
 
         private Quartz.IScheduler _scheduler;
         private ILog _log;
+        private int _packageCount = 0;
     }
 
     public class WindowsExeJob : IJob
@@ -69,7 +85,6 @@ namespace Laurus.TaskBoss.Core
             var startInfo = new ProcessStartInfo(exe);
             startInfo.WorkingDirectory = wdir;
             var startedProcess = System.Diagnostics.Process.Start(startInfo);
-            Console.WriteLine(startedProcess.Id);
         }
     }
 
