@@ -8,7 +8,6 @@ using uhttpsharp;
 
 namespace Laurus.TaskBoss.Core.HttpHandlers
 {
-    [HttpRequestHandlerAttributes("list")]
     public class ListTasksHandler : HttpRequestHandler
     {
         public ListTasksHandler(IScheduler scheduler)

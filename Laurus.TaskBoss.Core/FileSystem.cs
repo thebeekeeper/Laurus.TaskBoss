@@ -6,7 +6,6 @@ namespace Laurus.TaskBoss.Core
 {
     public class FileSystem : IFileSystem
     {
-     
         string[] IFileSystem.ReadText(string path)
         {
             return File.ReadAllLines(path);

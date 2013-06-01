@@ -10,6 +10,7 @@ namespace Laurus.TaskBoss.Core
 {
     public class WindsorHandlerFactory : IHandlerFactory
     {
+        // TODO: refactor this to not be a service locator
         public WindsorHandlerFactory(IWindsorContainer container)
         {
             _container = container;
