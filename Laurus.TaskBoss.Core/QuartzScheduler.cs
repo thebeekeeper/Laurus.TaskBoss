@@ -25,10 +25,14 @@ namespace Laurus.TaskBoss.Core
                 _log.Error("Package named {0} already exists - not scheduling this one", package.Name);
                 return;
             }
+            string workingDir = package.Location.FullName;
+            //if (!String.IsNullOrEmpty(package.WorkingDirectory))
+            //    workingDir = package.WorkingDirectory;
+
             var jobDetail = JobBuilder.Create()
                 .OfType<WindowsExeJob>()
                 .UsingJobData("exe_name", package.Executable)
-                .UsingJobData("working_dir", package.Location.FullName)
+                .UsingJobData("working_dir", workingDir)
                 .WithIdentity(package.Name)
                 .Build();
             _packageCount++;
@@ -78,14 +82,29 @@ namespace Laurus.TaskBoss.Core
 
     public class WindowsExeJob : IJob
     {
+        public WindowsExeJob()
+        {
+            _log = new Logger();
+        }
+
         public void Execute(IJobExecutionContext context)
         {
+            _log.Debug("Executing windows exe job");
             var exe = context.MergedJobDataMap.Get("exe_name") as string;
             var wdir = context.MergedJobDataMap.Get("working_dir") as string;
             var startInfo = new ProcessStartInfo(exe);
+            //startInfo.UseShellExecute = false;
+            //startInfo.RedirectStandardOutput = true;
             startInfo.WorkingDirectory = wdir;
             var startedProcess = System.Diagnostics.Process.Start(startInfo);
+            //using (var reader = startedProcess.StandardOutput)
+            //{
+            //    var output = reader.ReadToEnd();
+            //    _log.Debug(output);
+            //}
         }
+
+        private ILog _log;
     }
 
 }

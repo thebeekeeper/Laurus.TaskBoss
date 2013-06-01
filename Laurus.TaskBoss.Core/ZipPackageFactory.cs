@@ -31,6 +31,8 @@ namespace Laurus.TaskBoss.Core
                 }
                 var manifestContents = new StreamReader(manifestFile.Open()).ReadToEnd();
                 manifest = Newtonsoft.Json.JsonConvert.DeserializeObject<Manifest>(manifestContents);
+                // BUG: this doesn't handle directories correctly - i don't have the .net 4.5 System.IO.Compression
+                // for some reason which has a method to extract everything automatically
                 foreach (var e in archive.Entries)
                 {
                     var outFile = Path.Combine(path, e.Name);
@@ -38,6 +40,8 @@ namespace Laurus.TaskBoss.Core
                     {
                         var outStream = new FileStream(outFile, FileMode.CreateNew);
                         e.Open().CopyTo(outStream);
+                        outStream.Flush();
+                        outStream.Close();
                     }
                 }
             }
@@ -48,6 +52,7 @@ namespace Laurus.TaskBoss.Core
                 Executable = manifest.Executable,
                 Location = directoryInfo,
                 CronExpression = manifest.CronExpression,
+                WorkingDirectory = manifest.WorkingDirectory,
             };
         }
 
