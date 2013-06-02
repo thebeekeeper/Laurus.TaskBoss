@@ -19,7 +19,7 @@ namespace Laurus.TaskBoss.Core
 
         void IFileSystemWatcher.WatchDirectory(string path)
         {
-            var existingPackages = Directory.GetFiles(path, "*.zip");
+            var existingPackages = Directory.GetFiles(path, "*.zip").Concat(Directory.GetFiles(path, "*.json"));
             foreach (var p in existingPackages)
             {
                 FileInfo fi = new FileInfo(p);

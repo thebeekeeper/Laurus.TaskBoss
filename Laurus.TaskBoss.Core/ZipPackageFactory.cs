@@ -19,6 +19,11 @@ namespace Laurus.TaskBoss.Core
 
         Entities.JobPackage IPackageFactory.CreateFromFile(string zipFile)
         {
+            if (zipFile.EndsWith(".json"))
+            {
+                return ReadFromJson(zipFile);
+            }
+
             Manifest manifest = null;
             var path = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
             var directoryInfo = Directory.CreateDirectory(path);
@@ -51,6 +56,19 @@ namespace Laurus.TaskBoss.Core
                 Name = manifest.JobName,
                 Executable = manifest.Executable,
                 Location = directoryInfo,
+                CronExpression = manifest.CronExpression,
+                WorkingDirectory = manifest.WorkingDirectory,
+            };
+        }
+
+        private JobPackage ReadFromJson(string jsonFile)
+        {
+            var manifestContents = new StreamReader(File.OpenRead(jsonFile)).ReadToEnd();
+            var manifest = Newtonsoft.Json.JsonConvert.DeserializeObject<Manifest>(manifestContents);
+            return new JobPackage()
+            {
+                Name = manifest.JobName,
+                Executable = manifest.Executable,
                 CronExpression = manifest.CronExpression,
                 WorkingDirectory = manifest.WorkingDirectory,
             };
