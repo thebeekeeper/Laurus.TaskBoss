@@ -18,8 +18,13 @@ namespace Laurus.TaskBoss.Core
             ColoredConsoleTarget consoleTarget = new ColoredConsoleTarget();
             config.AddTarget("console", consoleTarget);
             consoleTarget.Layout = "${date:format=HH:MM:ss} ${logger} ${message}";
+            FileTarget fileTarget = new FileTarget();
+            fileTarget.FileName = @"c:\temp\tasks\log.txt";
+            config.AddTarget("file", fileTarget);
             LoggingRule rule1 = new LoggingRule("*", LogLevel.Debug, consoleTarget);
+            LoggingRule rule2 = new LoggingRule("*", LogLevel.Debug, fileTarget);
             config.LoggingRules.Add(rule1);
+            config.LoggingRules.Add(rule2);
             LogManager.Configuration = config;
             _logger = LogManager.GetLogger("Log");
         }
