@@ -91,8 +91,11 @@ namespace Laurus.TaskBoss.Core
         {
             _log.Debug("Executing windows exe job");
             var exe = context.MergedJobDataMap.Get("exe_name") as string;
+			var args = exe.Substring(exe.IndexOf(' '));
+			var cmd = exe.Substring(0, exe.IndexOf(' '));
             var wdir = context.MergedJobDataMap.Get("working_dir") as string;
-            var startInfo = new ProcessStartInfo(exe);
+            var startInfo = new ProcessStartInfo(cmd);
+			startInfo.Arguments = args;
             //startInfo.UseShellExecute = false;
             //startInfo.RedirectStandardOutput = true;
             startInfo.WorkingDirectory = wdir;
