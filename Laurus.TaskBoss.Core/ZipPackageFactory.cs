@@ -67,6 +67,7 @@ namespace Laurus.TaskBoss.Core
                 Executable = manifest.Executable,
                 CronExpression = manifest.CronExpression,
                 WorkingDirectory = manifest.WorkingDirectory,
+				Location = new DirectoryInfo(manifest.WorkingDirectory),
             };
         }
 

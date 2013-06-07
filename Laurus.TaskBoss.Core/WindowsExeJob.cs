@@ -15,8 +15,17 @@ namespace Laurus.TaskBoss.Core
         {
             _log.Debug("Executing windows exe job");
             var exe = context.MergedJobDataMap.Get("exe_name") as string;
-			var args = exe.Substring(exe.IndexOf(' '));
-			var cmd = exe.Substring(0, exe.IndexOf(' '));
+			string cmd = string.Empty;
+			string args = string.Empty;
+			if (exe.IndexOf(' ') > 0)
+			{
+				args = exe.Substring(exe.IndexOf(' '));
+				cmd = exe.Substring(0, exe.IndexOf(' '));
+			}
+			else
+			{
+				cmd = exe;
+			}
             var wdir = context.MergedJobDataMap.Get("working_dir") as string;
             var startInfo = new ProcessStartInfo(cmd);
 			startInfo.Arguments = args;
