@@ -1,10 +1,10 @@
-﻿using Castle.Windsor;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using uhttpsharp;
+using Castle.Windsor;
 
 namespace Laurus.TaskBoss.Core
 {

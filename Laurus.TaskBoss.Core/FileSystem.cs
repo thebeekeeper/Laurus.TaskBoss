@@ -1,6 +1,6 @@
-﻿using Laurus.TaskBoss.Core.Interfaces;
-using System;
+﻿using System;
 using System.IO;
+using Laurus.TaskBoss.Core.Interfaces;
 
 namespace Laurus.TaskBoss.Core
 {

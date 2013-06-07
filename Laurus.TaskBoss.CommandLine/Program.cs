@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Laurus.TaskBoss.CommandLine
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             IWindsorContainer container = new WindsorContainer();
             container.Install(new Installer());

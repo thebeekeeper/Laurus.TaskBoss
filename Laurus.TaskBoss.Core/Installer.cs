@@ -1,13 +1,13 @@
-﻿using Castle.MicroKernel.Registration;
-using Castle.Windsor;
-using Laurus.TaskBoss.Core.HttpHandlers;
-using Laurus.TaskBoss.Core.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using uhttpsharp;
+using Castle.MicroKernel.Registration;
+using Castle.Windsor;
+using Laurus.TaskBoss.Core.HttpHandlers;
+using Laurus.TaskBoss.Core.Interfaces;
 
 namespace Laurus.TaskBoss.Core
 {

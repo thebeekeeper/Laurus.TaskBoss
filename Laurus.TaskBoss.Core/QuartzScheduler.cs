@@ -1,13 +1,10 @@
-﻿using Laurus.TaskBoss.Core.Interfaces;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using Laurus.TaskBoss.Core.Interfaces;
 using Quartz;
 using Quartz.Impl;
 using Quartz.Impl.Matchers;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Laurus.TaskBoss.Core
 {
@@ -26,8 +23,6 @@ namespace Laurus.TaskBoss.Core
                 return;
             }
             string workingDir = package.Location.FullName;
-            //if (!String.IsNullOrEmpty(package.WorkingDirectory))
-            //    workingDir = package.WorkingDirectory;
 
             var jobDetail = JobBuilder.Create()
                 .OfType<WindowsExeJob>()
@@ -78,36 +73,6 @@ namespace Laurus.TaskBoss.Core
         private Quartz.IScheduler _scheduler;
         private ILog _log;
         private int _packageCount = 0;
-    }
-
-    public class WindowsExeJob : IJob
-    {
-        public WindowsExeJob()
-        {
-            _log = new Logger();
-        }
-
-        public void Execute(IJobExecutionContext context)
-        {
-            _log.Debug("Executing windows exe job");
-            var exe = context.MergedJobDataMap.Get("exe_name") as string;
-			var args = exe.Substring(exe.IndexOf(' '));
-			var cmd = exe.Substring(0, exe.IndexOf(' '));
-            var wdir = context.MergedJobDataMap.Get("working_dir") as string;
-            var startInfo = new ProcessStartInfo(cmd);
-			startInfo.Arguments = args;
-            //startInfo.UseShellExecute = false;
-            //startInfo.RedirectStandardOutput = true;
-            startInfo.WorkingDirectory = wdir;
-            var startedProcess = System.Diagnostics.Process.Start(startInfo);
-            //using (var reader = startedProcess.StandardOutput)
-            //{
-            //    var output = reader.ReadToEnd();
-            //    _log.Debug(output);
-            //}
-        }
-
-        private ILog _log;
     }
 
 }

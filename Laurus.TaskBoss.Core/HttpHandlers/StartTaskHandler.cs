@@ -21,7 +21,7 @@ namespace Laurus.TaskBoss.Core.HttpHandlers
             {
                 var jobName = httpRequest.Parameters.Params[0];
                 _scheduler.TriggerJob(jobName);
-                return new HttpResponse(HttpResponseCode.Ok, String.Format("Triggered job {0}", jobName));
+                return new HttpResponse(HttpResponseCode.Ok, string.Format("Triggered job {0}", jobName));
             }
             else
             {
@@ -29,6 +29,6 @@ namespace Laurus.TaskBoss.Core.HttpHandlers
             }
         }
 
-        IScheduler _scheduler;
+        private readonly IScheduler _scheduler;
     }
 }

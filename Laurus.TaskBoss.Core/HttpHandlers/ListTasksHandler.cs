@@ -18,7 +18,7 @@ namespace Laurus.TaskBoss.Core.HttpHandlers
         public override HttpResponse Handle(HttpRequest httpRequest)
         {
             var jobs = _scheduler.GetJobs();
-            var rval = String.Join("<br>", jobs);
+            var rval = string.Join("<br>", jobs);
             return new HttpResponse(HttpResponseCode.Ok, rval);
         }
 

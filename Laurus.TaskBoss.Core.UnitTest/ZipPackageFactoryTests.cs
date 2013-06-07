@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using Laurus.TaskBoss.Core.UnitTest.TestHelper;
 
 namespace Laurus.TaskBoss.Core.UnitTest
 {
@@ -26,16 +27,4 @@ namespace Laurus.TaskBoss.Core.UnitTest
         }
     }
 
-    public static class StringExtensions
-    {
-        public static Stream ToStream(this string str)
-        {
-            MemoryStream stream = new MemoryStream();
-            StreamWriter writer = new StreamWriter(stream);
-            writer.Write(str);
-            writer.Flush();
-            stream.Position = 0;
-            return stream;
-        }
-    }
 }

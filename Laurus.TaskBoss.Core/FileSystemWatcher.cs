@@ -1,10 +1,10 @@
-﻿using Laurus.TaskBoss.Core.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using Laurus.TaskBoss.Core.Interfaces;
 
 namespace Laurus.TaskBoss.Core
 {
@@ -26,17 +26,17 @@ namespace Laurus.TaskBoss.Core
                 AddPackage(fi.FullName, fi.Name);
             }
             var watcher = new System.IO.FileSystemWatcher(path);
-            watcher.Created += watcher_Created;
-            watcher.Deleted += watcher_Deleted;
+            watcher.Created += WatcherCreated;
+            watcher.Deleted += WatcherDeleted;
             watcher.EnableRaisingEvents = true;
         }
 
-        private void watcher_Created(object sender, FileSystemEventArgs e)
+        private void WatcherCreated(object sender, FileSystemEventArgs e)
         {
             AddPackage(e.FullPath, e.Name);
         }
 
-        private void watcher_Deleted(object sender, FileSystemEventArgs e)
+        private void WatcherDeleted(object sender, FileSystemEventArgs e)
         {
             _log.Info("Detected deleted package: {0}", e.Name);
         }

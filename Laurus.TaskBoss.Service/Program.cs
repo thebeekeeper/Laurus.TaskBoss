@@ -7,19 +7,18 @@ using System.Threading.Tasks;
 
 namespace Laurus.TaskBoss.Service
 {
-    static class Program
+    public static class Program
     {
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
-        static void Main()
+        public static void Main()
         {
-            ServiceBase[] ServicesToRun;
-            ServicesToRun = new ServiceBase[] 
+            ServiceBase[] servicesToRun = new ServiceBase[] 
             { 
                 new TaskBossService() 
             };
-            ServiceBase.Run(ServicesToRun);
+            ServiceBase.Run(servicesToRun);
         }
     }
 }

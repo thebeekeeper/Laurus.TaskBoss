@@ -32,7 +32,7 @@ namespace Laurus.TaskBoss.Core
                 var manifestFile = archive.GetEntry("manifest.json");
                 if (manifestFile == default(ZipArchiveEntry))
                 {
-                    throw new FileNotFoundException(String.Format("Manifest.json not found in {0}", zipFile));
+                    throw new FileNotFoundException(string.Format("Manifest.json not found in {0}", zipFile));
                 }
                 var manifestContents = new StreamReader(manifestFile.Open()).ReadToEnd();
                 manifest = Newtonsoft.Json.JsonConvert.DeserializeObject<Manifest>(manifestContents);
