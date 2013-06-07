@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Laurus.TaskBoss.Core.Interfaces;
+﻿using Laurus.TaskBoss.Core.Interfaces;
 using NLog;
 using NLog.Config;
 using NLog.Targets;

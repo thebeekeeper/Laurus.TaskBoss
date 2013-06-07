@@ -1,5 +1,4 @@
 ﻿using Laurus.TaskBoss.Core.Entities;
-using System;
 
 namespace Laurus.TaskBoss.Core.Interfaces
 {

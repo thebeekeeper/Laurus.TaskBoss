@@ -1,6 +1,5 @@
-﻿using Laurus.TaskBoss.Core.Entities;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Laurus.TaskBoss.Core.Entities;
 
 namespace Laurus.TaskBoss.Core.Interfaces
 {
