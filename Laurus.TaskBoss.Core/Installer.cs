@@ -3,6 +3,7 @@ using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using Laurus.TaskBoss.Core.HttpHandlers;
 using Laurus.TaskBoss.Core.Interfaces;
+using Quartz.Impl;
 
 namespace Laurus.TaskBoss.Core
 {
@@ -21,6 +22,12 @@ namespace Laurus.TaskBoss.Core
             container.Register(Component.For<HttpRequestHandler>().Named("list").ImplementedBy<ListTasksHandler>());
             container.Register(Component.For<IHandlerFactory>().ImplementedBy<WindsorHandlerFactory>());
             container.Register(Component.For<IWindsorContainer>().Instance(container).LifestyleSingleton());
+
+            container.Register(Component.For<Quartz.IScheduler>().UsingFactoryMethod(x =>
+            {
+                Quartz.ISchedulerFactory schedFact = new StdSchedulerFactory();
+                return schedFact.GetScheduler();
+            }));
         }
     }
 }

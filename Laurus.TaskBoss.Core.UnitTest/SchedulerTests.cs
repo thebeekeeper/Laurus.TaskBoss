@@ -16,7 +16,8 @@ namespace Laurus.TaskBoss.Core.UnitTest
         {
             var jobName = Guid.NewGuid().ToString();
             var logMock = new Mock<ILog>();
-            IScheduler scheduler = new QuartzScheduler(logMock.Object);
+            var schedMock = new Mock<Quartz.IScheduler>();
+            IScheduler scheduler = new QuartzScheduler(logMock.Object, schedMock.Object);
             scheduler.Start();
 
             scheduler.AddJob(new Entities.JobPackage() 
@@ -35,7 +36,8 @@ namespace Laurus.TaskBoss.Core.UnitTest
         {
             var jobName = Guid.NewGuid().ToString();
             var logMock = new Mock<ILog>();
-            IScheduler scheduler = new QuartzScheduler(logMock.Object);
+            var schedMock = new Mock<Quartz.IScheduler>();
+            IScheduler scheduler = new QuartzScheduler(logMock.Object, schedMock.Object);
             scheduler.Start();
             var package = new Entities.JobPackage() 
             {
@@ -45,7 +47,7 @@ namespace Laurus.TaskBoss.Core.UnitTest
             };
             scheduler.AddJob(package);
 
-            scheduler.RemoveJob(package);
+            scheduler.RemoveJob(package.Name);
 
             var jobNames = scheduler.GetJobs();
             Assert.Equal(0, jobNames.Count());
@@ -56,7 +58,8 @@ namespace Laurus.TaskBoss.Core.UnitTest
         {
             var jobName = Guid.NewGuid().ToString();
             var logMock = new Mock<ILog>();
-            IScheduler scheduler = new QuartzScheduler(logMock.Object);
+            var schedMock = new Mock<Quartz.IScheduler>();
+            IScheduler scheduler = new QuartzScheduler(logMock.Object, schedMock.Object);
             scheduler.Start();
             var package = new Entities.JobPackage() 
             {
@@ -65,7 +68,7 @@ namespace Laurus.TaskBoss.Core.UnitTest
                 CronExpression = "0 0 12 ? * WED",
             };
 
-            scheduler.RemoveJob(package);
+            scheduler.RemoveJob(package.Name);
 
             var jobNames = scheduler.GetJobs();
             Assert.False(jobNames.Contains(jobName));
@@ -76,7 +79,8 @@ namespace Laurus.TaskBoss.Core.UnitTest
         {
             var jobName = Guid.NewGuid().ToString();
             var logMock = new Mock<ILog>();
-            IScheduler scheduler = new QuartzScheduler(logMock.Object);
+            var schedMock = new Mock<Quartz.IScheduler>();
+            IScheduler scheduler = new QuartzScheduler(logMock.Object, schedMock.Object);
             scheduler.Start();
             var package = new Entities.JobPackage()
             {
@@ -90,7 +94,27 @@ namespace Laurus.TaskBoss.Core.UnitTest
 
             var jobNames = scheduler.GetJobs();
             Assert.Equal(1, jobNames.Count(x => x.Equals(jobName)));
+        }
 
+        [Fact]
+        public void Unscheduled_Job_Should_Have_Trigger()
+        {
+            var jobName = Guid.NewGuid().ToString();
+            var logMock = new Mock<ILog>();
+            var schedMock = new Mock<Quartz.IScheduler>();
+            var package = new Entities.JobPackage()
+            {
+                Name = jobName,
+                Location = new System.IO.DirectoryInfo(System.IO.Path.GetTempPath()),
+            };
+            int calls = 0;
+            schedMock.Setup(s => s.ScheduleJob(It.IsAny<Quartz.IJobDetail>(), It.IsAny<Quartz.ITrigger>())).Callback(() => calls++);
+            IScheduler scheduler = new QuartzScheduler(logMock.Object, schedMock.Object);
+            scheduler.Start();
+
+            scheduler.AddJob(package);
+
+            Assert.Equal(1, calls);
         }
     }
 }
