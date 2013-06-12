@@ -35,13 +35,13 @@ namespace Laurus.TaskBoss.Core
             _scheduler.ScheduleJob(jobDetail, trigger);
         }
 
-        void Laurus.TaskBoss.Core.Interfaces.IScheduler.RemoveJob(Entities.JobPackage package)
+        void Laurus.TaskBoss.Core.Interfaces.IScheduler.RemoveJob(string name)
         {
-            _log.Info("Removing job {0}", package.Name);
-            var key = new JobKey(package.Name);
+            _log.Info("Removing job {0}", name);
+            var key = new JobKey(name);
             if (_scheduler.CheckExists(key) == false)
             {
-                _log.Error("Cannot remove job [{0}] because it doesn't exist", package.Name);
+                _log.Error("Cannot remove job [{0}] because it doesn't exist", name);
             }
             else
             {

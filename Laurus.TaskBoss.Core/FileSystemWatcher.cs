@@ -35,6 +35,8 @@ namespace Laurus.TaskBoss.Core
         private void WatcherDeleted(object sender, FileSystemEventArgs e)
         {
             _log.Info("Detected deleted package: {0}", e.Name);
+            var package = _packageFactory.CreateFromFile(e.Name);
+            _scheduler.RemoveJob(package.Name);
         }
 
         private void AddPackage(string fullPath, string name)

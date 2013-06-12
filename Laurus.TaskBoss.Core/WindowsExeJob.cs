@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using Quartz;
 using Laurus.TaskBoss.Core.Interfaces;
+using System;
 
 namespace Laurus.TaskBoss.Core
 {
@@ -8,6 +9,8 @@ namespace Laurus.TaskBoss.Core
     {
         public WindowsExeJob()
         {
+            // not injecting this becuase it gets created by quartz - could use the quartz facility, but i don't like 
+            // that you have to use the xml config
             _log = new Logger();
         }
 
@@ -30,7 +33,15 @@ namespace Laurus.TaskBoss.Core
             var startInfo = new ProcessStartInfo(cmd);
 			startInfo.Arguments = args;
             startInfo.WorkingDirectory = wdir;
-            var startedProcess = System.Diagnostics.Process.Start(startInfo);
+            try
+            {
+                var startedProcess = System.Diagnostics.Process.Start(startInfo);
+            }
+            catch (Exception e)
+            {
+                _log.Error("Exception caught while starting {0}: {1}", exe, e.Message);
+                _log.Error("Working directory: {0}", wdir);
+            }
         }
 
         private ILog _log;
