@@ -20,7 +20,7 @@ namespace Laurus.TaskBoss.CommandLine
 			HostFactory.Run(x =>
 			{
 				x.Service(settings => container.Resolve<ServiceControl>());
-				x.RunAsLocalService();
+				x.RunAsLocalSystem();
 				x.SetDescription("Task runner");
 				x.SetDisplayName("Laurus.TaskBoss");
 				x.SetServiceName("LaurusTaskBoss");
