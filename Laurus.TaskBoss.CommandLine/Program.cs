@@ -6,28 +6,34 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Topshelf;
+using Castle.MicroKernel.Registration;
 
 namespace Laurus.TaskBoss.CommandLine
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            IWindsorContainer container = new WindsorContainer();
-            container.Install(new Installer());
-            ILog log = container.Resolve<ILog>();
+	public class Program
+	{
+		public static void Main(string[] args)
+		{
+			var container = BuildContainer();
 
-            IScheduler scheduler = container.Resolve<IScheduler>();
-            log.Info("Starting scheduler");
-            // HACK: scheduler needs to be started before the file system watcher because
-            // the watcher adds jobs to the scheduler
-            scheduler.Start();
+			HostFactory.Run(x =>
+			{
+				x.Service(settings => container.Resolve<ServiceControl>());
+				x.RunAsLocalService();
+				x.SetDescription("Task runner");
+				x.SetDisplayName("Laurus.TaskBoss");
+				x.SetServiceName("LaurusTaskBoss");
+				x.StartAutomatically();
+			});
+		}
 
-            log.Info("Starting file system watcher");
-            container.Resolve<IFileSystemWatcher>().WatchDirectory(@"C:\temp\tasks");
-
-            log.Info("Starting http server on port 8000");
-            container.Resolve<IHttpListener>().Listen(8000);
-        }
-    }
+		static IWindsorContainer BuildContainer()
+		{
+			IWindsorContainer container = new WindsorContainer();
+			container.Install(new Installer());
+			container.Register(Component.For<ServiceControl>().ImplementedBy<ServiceController>());
+			return container;
+		}
+	}
 }
